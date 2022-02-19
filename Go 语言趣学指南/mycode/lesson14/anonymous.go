@@ -2,7 +2,8 @@ package main
 
 import "fmt"
 
-type kelvin float64
+//在包中已经声明过了
+//type kelvin float64
 
 func main() {
 	var k kelvin = 294.0
