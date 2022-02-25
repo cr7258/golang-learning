@@ -1,9 +1,9 @@
 编写一个 HTTP 服务器：
-1.接收客户端 request，并将 request 中带的 header 写入 response header。
-2.读取当前系统的环境变量中的 VERSION 配置，并写入 response header。
-3.Server 端记录访问日志包括客户端 IP，HTTP 返回码，输出到 server 端的标准输出。
-4.当访问 /healthz 时，应返回 200。
-5.针对 http 服务的 pprof。
+* 1.接收客户端 request，并将 request 中带的 header 写入 response header。
+* 2.读取当前系统的环境变量中的 VERSION 配置，并写入 response header。
+* 3.Server 端记录访问日志包括客户端 IP，HTTP 返回码，输出到 server 端的标准输出。
+* 4.当访问 /healthz 时，应返回 200。
+* 5.针对 http 服务的 pprof。
 
 
 
@@ -45,7 +45,7 @@ ok
 
 ![](https://chengzw258.oss-cn-beijing.aliyuncs.com/Article/20220225224501.png)
 
-点击 profile 可以生成并下载 profile 文件，在 speedscope UI(https://www.speedscope.app/) 网站上可以进行直观的分析。
+点击 profile 可以生成并下载 profile 文件，上传至 speedscope UI(https://www.speedscope.app/) 网站上可以进行直观的分析。
 
 ![](https://chengzw258.oss-cn-beijing.aliyuncs.com/Article/20220225224736.png)
 
