@@ -9,28 +9,32 @@ func sourceGopher(downstream chan string) {
 	for _, v := range []string{"hello world", "a bad apple", "goodbye all"} {
 		downstream <- v
 	}
-	// 空字符串标识已经发送完成
-	downstream <- ""
+	// 使用 close 关闭通道
+	close(downstream)
 }
 
 func filterGopher(upstream, downstream chan string) {
-	for {
-		item := <-upstream
-		if item == "" {
-			downstream <- ""
-		}
+	//for {
+	//	item, ok := <-upstream
+	//	if !ok {
+	//		close(downstream)
+	//		return
+	//	}
+	//	if !strings.Contains(item, "bad") {
+	//		downstream <- item
+	//	}
+	//}
+	// 通过 range 循环以更简单的方式处理通道数据，效果和上面一致
+	for item := range upstream {
 		if !strings.Contains(item, "bad") {
 			downstream <- item
 		}
 	}
+	close(downstream)
 }
 
 func printGopher(upstream chan string) {
-	for {
-		v := <-upstream
-		if v == "" {
-			return
-		}
+	for v := range upstream {
 		fmt.Println(v)
 	}
 }
