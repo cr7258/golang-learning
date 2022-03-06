@@ -1,24 +1,45 @@
 ## 课后练习 3.1
-- Memory 子系统练习。
-- 在 cgroup memory 子系统目录中创建目录结构。
+- Memory 子系统练习
+
+编译 malloc 程序，编译完成后在该目录下会生成名为 malloc 的二进制文件。
+```bash
+go build -o malloc
+```
+
+在不限制内存的情况下，启动 malloc 程序。
+```bash
+./malloc
+
+# 输出如下，在不断申请内存
+Allocating 100Mb memory, raw memory is 104960000
+Allocating 200Mb memory, raw memory is 209920000
+Allocating 300Mb memory, raw memory is 314880000
+```
+
+查看内存使用情况。
+```bash
+top
+```
+![](https://chengzw258.oss-cn-beijing.aliyuncs.com/Article/20220306204950.png)
+
+通过 cgroup 限制 memory。
+首先在 cgroup memory 子系统目录中创建目录结构。
 ```bash
 cd /sys/fs/cgroup/memory
 mkdir memorydemo
 cd memorydemo
 ```
-- 运行 malloc（在 linux 机器 make build）。
-- 查看内存使用情况。
+然后把进程添加到 cgroup 进程配置组。
 ```bash
-watch 'ps -aux | grep malloc | grep -v grep'
+ps -ef | grep malloc | grep -v grep | awk '{print $2}' > cgroup.procs
 ```
-- 通过 cgroup 限制 memory
-把进程添加到 cgroup 进程配置组。
-```bash
-echo ps -ef | grep malloc | grep -v grep | awk '{print $2}' > cgroup.procs
-```
-设置 memory.limit_in_bytes
+设置 memory.limit_in_bytes，限制内存使用量为 100Mb。 
 ```bash
 echo 104960000 > memory.limit_in_bytes
+```
+等待进程被 OOM Kill，如果不起作用可能是使用了 swap 的原因，解决方法是将 swappiness 设置为 0。
+```bash
+echo 0 > memory.swappiness
 ```
 
 ## 课后练习 3.2
@@ -79,3 +100,7 @@ $nsenter -t 34844 -n ip addr
 - [构建 Golang 应用最小 Docker 镜像](https://juejin.cn/post/6844904174396637197)
 - [go语言编译真正的静态可执行文件](https://rocket049.cn/static-go.md)
 - [基于 Alpine 的 Docker 镜像编译的程序无法在云函数环境运行](https://cloud.tencent.com/developer/article/1536308)
+- [如何通过 Cgroups 机制实现资源限制](https://my.oschina.net/u/4923278/blog/4980857)
+- [Linux CGroup 基础](https://wudaijun.com/2018/10/linux-cgroup/)
+- [Go 编译 binutils 库问题](https://www.cnblogs.com/xuelisheng/p/10452111.html)
+- [cgroup内存限制不起作用的原因](https://segmentfault.com/a/1190000037504275)
