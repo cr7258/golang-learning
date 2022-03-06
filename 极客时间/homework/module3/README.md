@@ -20,6 +20,7 @@ Allocating 300Mb memory, raw memory is 314880000
 ```bash
 top
 ```
+
 ![](https://chengzw258.oss-cn-beijing.aliyuncs.com/Article/20220306204950.png)
 
 通过 cgroup 限制 memory。

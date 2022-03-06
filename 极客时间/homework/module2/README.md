@@ -5,8 +5,6 @@
 * 4.当访问 /healthz 时，应返回 200。
 * 5.针对 http 服务的 pprof。
 
-
-
 启动之前先设置 VERSION 环境变量。
 
 ![](https://chengzw258.oss-cn-beijing.aliyuncs.com/Article/20220225224048.png)
