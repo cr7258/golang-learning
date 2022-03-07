@@ -1,7 +1,6 @@
 # golang 编译环境
 FROM golang:1.17 AS build
-# 设置镜像标签，配合 label filter 可以查看过滤结果
-LABEL company="geek"
+
 # 工作目录
 WORKDIR /usr/src/app
 # 设置代理，提升依赖下载速度
@@ -27,7 +26,8 @@ COPY . .
 # -ldflags "-s -w"
 RUN CGO_ENABLED=0 go build -ldflags "-s -w" -o http-server
 
-
 FROM scratch
+# 设置镜像标签，配合 label filter 可以查看过滤结果
+LABEL company="geek" project="cloudnative"
 COPY --from=build /usr/src/app/http-server /bin/http-server
 ENTRYPOINT ["/bin/http-server"]
