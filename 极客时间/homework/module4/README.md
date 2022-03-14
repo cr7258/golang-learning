@@ -300,7 +300,6 @@ mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
-![](https://chengzw258.oss-cn-beijing.aliyuncs.com/Article/20220313165421.png)
 
 worker 节点加入集群。
 ```bash
@@ -327,7 +326,7 @@ calico 默认给 Pod 分配的 CIDR 是 192.168.0.0/16，在初始化集群的�
 
 编辑 pool.yaml 文件修改 CIDR。
 
-![image-20220313223429037](/Users/chengzhiwei/Library/Application Support/typora-user-images/image-20220313223429037.png)
+![](https://chengzw258.oss-cn-beijing.aliyuncs.com/Article/20220314223634.png)
 
 修改完成后，部署 calico。
 
