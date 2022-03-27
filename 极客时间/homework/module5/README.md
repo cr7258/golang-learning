@@ -219,7 +219,7 @@ openssl x509 -in /tmp/certs/s3.pem -text -noout
 ```
 
 #### 安装 Etcd
-根据网页提示的内容安装 etcd，选择对应的操作系统，我使用的是 Linux。
+根据网页提示的内容安装 etcd，选择对应的操作系统。
 ```bash
 ETCD_VER=v3.3.8
 
