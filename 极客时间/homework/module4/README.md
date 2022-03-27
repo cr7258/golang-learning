@@ -523,9 +523,9 @@ Commercial support is available at
 
 ## 通过非级联删除的方法逐个删除对象
 ```bash
-kubectl delete -f envoy-deploy.yaml
-kubectl delete configmap envoy-config
-kubectl delete -f nginx-deploy.yaml
+kubectl delete deployment envoy --cascade=orphan
+kubectl delete replicaset envoy-xxxxx --cascade=orphan
+kubectl delete pod envoy-xxxxx --cascade=orphan
 ```
 
 # 参考资料
