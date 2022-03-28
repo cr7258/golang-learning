@@ -97,6 +97,50 @@ $nsenter -t 34844 -n ip addr
     inet 172.17.0.2/16 brd 172.17.255.255 scope global eth0
        valid_lft forever preferred_lft forever
 ```
+
+## 3.3 chroot
+chroot 命令用来在指定的根目录下运行指令。chroot，即 change root directory （更改 root 目录）。在 linux 系统中，系统默认的目录结构都是以 `/`，即是以根 (root) 开始的。而在使用 chroot 之后，系统的目录结构将以指定的位置作为 `/` 位置。
+
+```bash
+# 建立 chroot 所需的目录
+export path=/tmp/mypath
+mkdir -p $path
+mkdir -p $path/{bin,lib/x86_64-linux-gnu,lib64,etc,var}
+
+# 拷贝所需命令都目录里
+cp -vf /bin/{bash,ls} $path/bin
+
+# 拷贝依赖库
+list=`ldd /bin/ls | egrep -o '/lib.*\.[0-9]'`
+for i in $list; do sudo cp -vf $i $path/$i; done
+list=`ldd /bin/bash | egrep -o '/lib.*\.[0-9]'`
+for i in $list; do sudo cp -vf $i $path/$i; done
+
+# chroot 进入环境，只能执行 ls 和 bash 命令
+chroot $path /bin/bash
+```
+
+通过解压容器镜像获取运行时文件系统包（filesystem bundle）。
+```bash
+docker pull busybox
+docker image save busybox -o busybox.tar
+mkdir -p /tmp/chengzw/busybox
+tar -xf busybox.tar -C /tmp/chengzw/busybox/
+cd /tmp/chengzw/busybox/2461e071255f4a5cc48606b1b674e9113f7595485867bcc837e24d9ee13ef06b
+# layer 目录存放的是运行时文件系统包，解压 layer 文件
+tar -xf layer.tar
+```
+
+查看解压完的目录。
+```
+$ls 
+bin  dev  etc  home  json  layer.tar  root  tmp  usr  var  VERSION
+```
+chroot 切换根目录。
+```
+chroot /tmp/chengzw/busybox/2461e071255f4a5cc48606b1b674e9113f7595485867bcc837e24d9ee13ef06b /bin/sh
+```
+
 ## 参考资料
 - [构建 Golang 应用最小 Docker 镜像](https://juejin.cn/post/6844904174396637197)
 - [go语言编译真正的静态可执行文件](https://rocket049.cn/static-go.md)
@@ -105,3 +149,5 @@ $nsenter -t 34844 -n ip addr
 - [Linux CGroup 基础](https://wudaijun.com/2018/10/linux-cgroup/)
 - [Go 编译 binutils 库问题](https://www.cnblogs.com/xuelisheng/p/10452111.html)
 - [cgroup内存限制不起作用的原因](https://segmentfault.com/a/1190000037504275)
+- [云原生2期 模块3](https://shimo.im/docs/yBL3u6MFMiw6OTLT/read)
+- [chroot的用法](https://cloud.tencent.com/developer/article/1603505)
