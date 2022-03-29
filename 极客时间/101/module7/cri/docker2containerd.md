@@ -23,7 +23,7 @@ sed -i s#k8s.gcr.io/pause:3.5#registry.aliyuncs.com/google_containers/pause:3.5#
 sed -i s#'SystemdCgroup = false'#'SystemdCgroup = true'#g /etc/containerd/config.toml
 ```
 
-### Edit kubelet config and add extra args
+### Edit kubelet config and add extra args（只在 master 节点操作）
 
 ```sh
 vi /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
