@@ -18,12 +18,11 @@ containerd config default | sudo tee /etc/containerd/config.toml
 ### Update default config
 
 ```sh
-vi /etc/containerd/config.toml
 sed -i s#k8s.gcr.io/pause:3.5#registry.aliyuncs.com/google_containers/pause:3.5#g /etc/containerd/config.toml
 sed -i s#'SystemdCgroup = false'#'SystemdCgroup = true'#g /etc/containerd/config.toml
 ```
 
-### Edit kubelet config and add extra args（只在 master 节点操作）
+### Edit kubelet config and add extra args
 
 ```sh
 vi /etc/systemd/system/kubelet.service.d/10-kubeadm.conf

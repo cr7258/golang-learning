@@ -1,0 +1,16 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: nginx-letsencrypt
+  #namespace: ingress # 和 nginx ingress controller 在同一个命名空间
+spec:
+  acme:
+    email: chengzw258@163.com
+    server: https://acme-v02.api.letsencrypt.org/directory
+    preferredChain: "httpserver" # 证书的通用名称 CN
+    privateKeySecretRef: # 私钥
+      name: nginx-tls
+    solvers:
+    - http01:
+        ingress:
+          class: nginx
