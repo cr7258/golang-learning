@@ -115,9 +115,9 @@ Bye from the preStop handler
 - 如何确保整个应用的高可用。
 - 如何通过证书保证 httpServer 的通讯安全。
 
-### 部署 OpenELB 作为 LoadBalancer Provider
+### 部署 Metallb 作为 LoadBalancer Provider
 
-确认 strictARP 模式：如果你的网络是运行在 IPVS 模式下(默认是 iptables), 那么需要设置 strictARP 模式，修改其中的 strictARP 为true:
+确认 strictARP 模式：如果你的网络是运行在 IPVS 模式下（默认是 iptables）, 那么需要设置 strictARP 模式，修改其中的 strictARP 为 true:
 ```bash
 kubectl edit configmap -n kube-system kube-proxy
 ```

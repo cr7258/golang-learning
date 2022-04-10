@@ -2,7 +2,6 @@ apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
   name: nginx-letsencrypt
-  #namespace: ingress # 和 nginx ingress controller 在同一个命名空间
 spec:
   acme:
     email: chengzw258@163.com
