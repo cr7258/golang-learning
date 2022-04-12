@@ -169,7 +169,7 @@ $ kubectl get svc -n ingress
 NAME                                            TYPE           CLUSTER-IP     EXTERNAL-IP   PORT(S)                      AGE
 my-ingress-ingress-nginx-controller             LoadBalancer   133.0.77.13    11.8.38.247   80:30917/TCP,443:32686/TCP   13m
 ```
-## 安装 Cert Manager
+## 安装 Cert-Manager
 ```bash
 helm repo add jetstack https://charts.jetstack.io
 helm repo update
@@ -298,3 +298,5 @@ working
 - [使用metalLB来实现负载均衡Load Balancer](https://blog.cnscud.com/k8s/2021/09/17/k8s-metalb.html)
 - [Securing NGINX-ingress](https://cert-manager.io/v0.13-docs/tutorials/acme/ingress/#step-3-assign-a-dns-name)
 - [How to Set Up an Nginx Ingress with Cert-Manager on DigitalOcean Kubernetes](https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nginx-ingress-with-cert-manager-on-digitalocean-kubernetes)
+- [使用 cert-manager 签发免费证书](https://cloud.tencent.com/document/product/457/49368)
+- [k8s 上利用 cert-manager 自动签发 TLS 证书](https://hadb.me/k8s-cert-manager-tls/)

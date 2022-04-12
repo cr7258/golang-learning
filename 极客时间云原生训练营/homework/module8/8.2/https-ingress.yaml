@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-      cert-manager.io/cluster-issuer: nginx-letsencrypt
+      cert-manager.io/cluster-issuer: nginx-letsencrypt # 让 Cert-Manager 自动申请证书
   name: https-ingress
 spec:  
   ingressClassName: nginx
@@ -20,4 +20,4 @@ spec:
   tls:
    - hosts:
       - www.example.com
-     secretName: nginx-tls
+     secretName: nginx-cert
