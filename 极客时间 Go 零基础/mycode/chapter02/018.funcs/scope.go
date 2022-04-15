@@ -11,7 +11,6 @@ var tall float64
 var weight float64
 
 func main() {
-
 	fmt.Println("全局变量赋值前: ", calcAdd()) // 0 + 0 = 0
 
 	tall, weight = 1.70, 70.0
