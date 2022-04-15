@@ -1,9 +1,17 @@
 package main
 
 import (
-	"calc"
 	"fmt"
+	calc "mycode/chapter02/015.fatrate.refactor/calc"
 )
+
+/*
+函数，包引用
+*/
+
+func main() {
+	mainFatRateBody()
+}
 
 // 计算体脂率
 func mainFatRateBody() {

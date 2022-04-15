@@ -1,4 +1,4 @@
-package calculator
+package calc
 
 // 根据年龄计算体脂率
 func CalcFatRate(bmi float64, age int, sex string) (fatRate float64) {
