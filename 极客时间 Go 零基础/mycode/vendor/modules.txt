@@ -1,3 +1,6 @@
+# github.com/armstrongli/go-bmi v0.0.1 => ./staging/src/github.com/armstrongli/go-bmi
+## explicit; go 1.18
+github.com/armstrongli/go-bmi
 # github.com/inconshreveable/mousetrap v1.0.0
 ## explicit
 github.com/inconshreveable/mousetrap
@@ -7,3 +10,4 @@ github.com/spf13/cobra
 # github.com/spf13/pflag v1.0.5
 ## explicit; go 1.12
 github.com/spf13/pflag
+# github.com/armstrongli/go-bmi => ./staging/src/github.com/armstrongli/go-bmi
