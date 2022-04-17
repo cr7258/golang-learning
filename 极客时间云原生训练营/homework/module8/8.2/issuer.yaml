@@ -1,12 +1,11 @@
 apiVersion: cert-manager.io/v1
-kind: ClusterIssuer
+kind: Issuer
 metadata:
   name: nginx-letsencrypt
 spec:
   acme:
     email: chengzw258@163.com
     server: https://acme-v02.api.letsencrypt.org/directory
-    preferredChain: "httpserver" # 证书的通用名称 CN
     privateKeySecretRef: # 私钥
       name: nginx-tls
     solvers:

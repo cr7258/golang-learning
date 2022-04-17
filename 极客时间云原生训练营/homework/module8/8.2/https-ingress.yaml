@@ -2,22 +2,22 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-      cert-manager.io/cluster-issuer: nginx-letsencrypt # 让 Cert-Manager 自动申请证书
+      cert-manager.io/issuer: nginx-letsencrypt # 让 Cert-Manager 自动申请证书
   name: https-ingress
-spec:  
+spec:
   ingressClassName: nginx
   rules:
-  - host: www.example.com
+  - host: ingress.se7enshare.cn  # 公网能解析的域名
     http:
       paths:
       - backend:
           service:
-            name: httpserver
+            name: httpserver  # 后端服务
             port:
               number: 8080
         path: /
         pathType: Prefix
   tls:
    - hosts:
-      - www.example.com
-     secretName: nginx-cert
+      - ingress.se7enshare.cn
+     secretName: nginx-cert  # cert-manager 会自动创建 secret，将申请的证书存放在里面
