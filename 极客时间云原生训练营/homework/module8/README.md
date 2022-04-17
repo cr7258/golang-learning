@@ -133,7 +133,7 @@ Bye from the preStop handler
 - 如何通过证书保证 httpServer 的通讯安全。
 
 
-## 2.1 创建 Service
+### 2.1 创建 Service
 
 ```bash
 kubectl apply -f 8.2/service.yaml
@@ -187,11 +187,11 @@ helm install cert-manager jetstack/cert-manager --namespace cert-manager --creat
 ```
 
 为了让 ACME（Automated Certificate Management Environment，自动证书管理环境）的 CA 服务器给客户端颁发证书，客户端必须完成 challenges（挑战），以验证客户端拥有该域名。cert-manager 提供了两种挑战验证的方式：
-- **HTTP01**：cert-manage 将会自动创建一个用于 ACME 验证的 ingress，在http://<YOUR_DOMAIN>/.well-known/acme-challenge/<TOKEN>（用提供的令牌替换 <TOKEN>）路径上放置指定文件。该文件包含令牌以及帐户密钥的指纹。ACME 服务器验证成功后，就会颁发证书。
+- **HTTP01**：cert-manage 将会自动创建一个用于 ACME 验证的 ingress，在http://<YOUR_DOMAIN>/.well-known/acme-challenge/<TOKEN>（用提供的令牌替换 <TOKEN>）路径上放置指定文件。该文件包含令牌以及帐户密钥的指纹。ACME 服务器会访问这个 ingress 的路径，验证成功后，就会颁发证书，因此要求 **ingress 在公网能够访问到**。
 
 ![](https://chengzw258.oss-cn-beijing.aliyuncs.com/Article/20220417133652.png)
 
-- **DNS01**：提供在 DNS 服务商的 apiKey，cert-manage 会使用 apiKey 在 DNS 服务中创建 ACME 服务器指定的 TXT 记录，ACME 服务器验证成功后，就会颁发证书。
+- **DNS01**：提供在 DNS 服务商的 apiKey，cert-manage 会使用 apiKey 在 DNS 服务中创建 ACME 服务器指定的 TXT 记录，ACME 服务器访问域名的 TXT 记录，验证成功后，就会颁发证书，**ingress 不需要能被公网访问到**，只要域名对应的 IP（可以不是 ingress 的 IP） 能被 ACME 服务器访问到即可。
 ### 2.4 HTTP01 申请证书
 
 查看 nginx ingress controller 对外暴露的公网 IP。
@@ -213,7 +213,6 @@ ingress-nginx-controller-admission   ClusterIP      172.16.253.185   <none>     
 
 
 验证解析。
-
 ```bash
 $ nslookup ingress.se7enshare.cn
 
@@ -228,7 +227,6 @@ Address: 129.226.99.21
 ```
 
 创建 Issuer。
-
 ```yaml
 kind: Issuer
 metadata:
@@ -255,7 +253,7 @@ NAME                READY   AGE
 nginx-letsencrypt   True    94s
 ```
 
-创建 HTTPS 加密的 ingress。
+创建 HTTPS 加密的 Ingress。
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -282,8 +280,6 @@ spec:
       - ingress.se7enshare.cn
      secretName: nginx-cert  # cert-manager 会自动创建 secret，将申请的证书存放在里面
 ```
-
-
 
 查看创建的 certificate，如果看到 READY 为 true，表示证书已经成功签发。
 
