@@ -39,7 +39,7 @@ func main() {
 	mux.HandleFunc("/delay", delay)
 	// metric
 	mux.Handle("/metrics", promhttp.Handler())
-	err := http.ListenAndServe(":80", mux)
+	err := http.ListenAndServe(":8080", mux)
 
 	if err != nil {
 		log.Fatal(err)
