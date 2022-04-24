@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: httpserver
+  name: httpserver
+spec:
+  replicas: 3 # 副本数
+  selector: # 选择器
+    matchLabels:
+      app: httpserver
+  template:  # Pod 模板
+    metadata:
+      labels:
+        app: httpserver
+    spec:
+      containers:
+        - name: httpserver # 容器名
+          image: cr7258/http-server:v3 # 镜像名
+          ports:
+            - containerPort: 80
+
