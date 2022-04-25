@@ -12,7 +12,7 @@ COPY ./go.mod ./
 COPY ./go.sum ./
 RUN go mod download
 COPY . .
-RUN go build -o http-server http.go
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o http-server http.go
 
 FROM busybox:1.28
 COPY --from=build /usr/src/app/http-server /bin/http-server

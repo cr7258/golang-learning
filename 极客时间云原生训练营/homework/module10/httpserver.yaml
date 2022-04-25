@@ -4,6 +4,7 @@ metadata:
   labels:
     app: httpserver
   name: httpserver
+  namespace: cloudnative
 spec:
   replicas: 3 # 副本数
   selector: # 选择器
@@ -16,7 +17,27 @@ spec:
     spec:
       containers:
         - name: httpserver # 容器名
-          image: cr7258/http-server:v3 # 镜像名
+          image: cr7258/http-server:v4 # 镜像名
           ports:
             - containerPort: 80
+          imagePullPolicy: Always
 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    prometheus.io/port: "8080"  # prometheus 抓取指标的端口
+    prometheus.io/scrape: "true"
+  labels:
+    app: httpserver
+  name: httpsvc
+  namespace: cloudnative
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: httpserver
+  type: NodePort

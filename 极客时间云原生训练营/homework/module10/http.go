@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"github.com/Am2901/httpserver/src/metrics"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"io"
 	"log"
 	"math/rand"
+	"net"
 	"net/http"
 	"net/http/pprof"
 	"os"
@@ -14,71 +14,84 @@ import (
 	"time"
 )
 
-/**
-1.为 httpserver 添加 0-2 秒的随机延时
-2.为 httpserver 添加延时的 metric
-*/
-func main() {
-	//flag.Set("v", "2") // glog 读取 v 来决定日志级别
-	//glog.V(2).Info("Starting http server...")
-	fmt.Println("Starting http server...")
-	// 注册 handle 处理函数
-	//http.HandleFunc("/", rootHandler)
-	//http.HandleFunc("/healthz", healthz)
-	// 监听本地 80 端口
-	//err := http.ListenAndServe(":80", nil)
-	mux := http.NewServeMux()
-	mux.HandleFunc("/", rootHandler)
-	mux.HandleFunc("/healthz", healthz)
-	// 5.针对 http 服务的 pprof
-	mux.HandleFunc("/debug/pprof/", pprof.Index)
-	mux.HandleFunc("/debug/pprof/profile", pprof.Profile)
-	mux.HandleFunc("/debug/pprof/symbol", pprof.Symbol)
-	mux.HandleFunc("/debug/pprof/trace", pprof.Trace)
-	// 增加延时
-	mux.HandleFunc("/delay", delay)
-	// metric
-	mux.Handle("/metrics", promhttp.Handler())
-	err := http.ListenAndServe(":8080", mux)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
-// 定义 handle 处理函数
-func rootHandler(w http.ResponseWriter, r *http.Request) {
-	// 1.将 request 中带的 header 写入 response header
-	fmt.Println("======== Get request header ========")
-	for k, v := range r.Header {
-		fmt.Printf("%s=%s\n", k, v)
-		w.Header().Set(k, v[0])
-	}
-
-	// 2.读取当前系统的环境变量中的 VERSION 配置，并写入 response header
+func index(w http.ResponseWriter, r *http.Request) {
+	//w.Write([]byte("<h1>Welcome to Cloud Native</h1>"))
+	// 03.设置version
+	os.Setenv("VERSION", "v0.0.1")
 	version := os.Getenv("VERSION")
-	w.Header().Set("Version", version)
-	fmt.Println("====================================")
-
-	// 3.Server 端记录访问日志包括客户端 IP，HTTP 返回码，输出到 server 端的标准输出
-	remote := strings.Split(r.RemoteAddr, ":")
-	ip := remote[0]
-	port := remote[1]
-	// 设置响应码
-	w.WriteHeader(200)
-	fmt.Println("source_address: "+ip+" source_port: "+port, " status_code: 200")
+	w.Header().Set("VERSION", version)
+	fmt.Printf("os version: %s \n", version)
+	// 02.将requst中的header 设置到 reponse中
+	for k, v := range r.Header {
+		for _, vv := range v {
+			fmt.Printf("Header key: %s, Header value: %s \n", k, v)
+			w.Header().Set(k, vv)
+		}
+	}
+	// 04.记录日志并输出
+	clientip := ClientIP(r)
+	//fmt.Println(r.RemoteAddr)
+	log.Printf("Success! Response code: %d", 200)
+	log.Printf("Success! clientip: %s", clientip)
 }
 
-// 4.当访问 localhost/healthz 时，应返回 200
+// 05.健康检查的路由
 func healthz(w http.ResponseWriter, r *http.Request) {
-	io.WriteString(w, "ok\n")
+	fmt.Fprintf(w, "working")
 }
 
-// 增加延时
-func delay(w http.ResponseWriter, r *http.Request) {
+func getCurrentIP(r *http.Request) string {
+	// 这里也可以通过X-Forwarded-For请求头的第一个值作为用户的ip
+	// 但是要注意的是这两个请求头代表的ip都有可能是伪造的
+	ip := r.Header.Get("X-Real-IP")
+	if ip == "" {
+		// 当请求头不存在即不存在代理时直接获取ip
+		ip = strings.Split(r.RemoteAddr, ":")[0]
+	}
+	return ip
+}
+
+// ClientIP 尽最大努力实现获取客户端 IP 的算法。
+// 解析 X-Real-IP 和 X-Forwarded-For 以便于反向代理（nginx 或 haproxy）可以正常工作。
+func ClientIP(r *http.Request) string {
+	xForwardedFor := r.Header.Get("X-Forwarded-For")
+	ip := strings.TrimSpace(strings.Split(xForwardedFor, ",")[0])
+	if ip != "" {
+		return ip
+	}
+	ip = strings.TrimSpace(r.Header.Get("X-Real-Ip"))
+	if ip != "" {
+		return ip
+	}
+	if ip, _, err := net.SplitHostPort(strings.TrimSpace(r.RemoteAddr)); err == nil {
+		return ip
+	}
+	return ""
+}
+
+func images(w http.ResponseWriter, r *http.Request) {
 	timer := metrics.NewTimer()
 	defer timer.ObserveTotal()
 	randInt := rand.Intn(2000)
 	time.Sleep(time.Millisecond * time.Duration(randInt))
-	w.Write([]byte(fmt.Sprintf("duration: %d", randInt)))
+	w.Write([]byte(fmt.Sprintf("<h1>%d<h1>", randInt)))
+}
+
+func main() {
+	metrics.Register()
+	mux := http.NewServeMux()
+	// 06. debug
+	mux.HandleFunc("/debug/pprof/", pprof.Index)
+	mux.HandleFunc("/debug/pprof/profile", pprof.Profile)
+	mux.HandleFunc("/debug/pprof/symbol", pprof.Symbol)
+	mux.HandleFunc("/debug/pprof/trace", pprof.Trace)
+	mux.HandleFunc("/", index)
+	// 增加延时
+	mux.HandleFunc("/images", images)
+	// 暴露指标
+	mux.Handle("/metrics", promhttp.Handler())
+	mux.HandleFunc("/healthz", healthz)
+	if err := http.ListenAndServe(":8080", mux); err != nil {
+		log.Fatalf("start http server failed, error: %s\n", err.Error())
+	}
 }
