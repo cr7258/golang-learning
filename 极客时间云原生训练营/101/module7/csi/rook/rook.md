@@ -37,7 +37,7 @@ kubectl get po -n rook-ceph
 Wait for all pod to be running, and:
 
 ```sh
-kubectl create -f cluster-test.yaml
+kubectl create -f cluster-code.yaml
 ```
 
 ### Create storage class
@@ -49,7 +49,7 @@ kubectl get po -n rook-ceph
 Wait for all pod to be running, and:
 
 ```sh
-kubectl create -f csi/rbd/storageclass-test.yaml
+kubectl create -f csi/rbd/storageclass-code.yaml
 ```
 
 ### Check configuration
@@ -156,8 +156,8 @@ Login to the console with `admin/<password>`.
 
 ```sh
 cd ~/go/src/github.com/rook/cluster/examples/kubernetes/ceph
-kubectl delete -f csi/rbd/storageclass-test.yaml
-kubectl delete -f cluster-test.yaml
+kubectl delete -f csi/rbd/storageclass-code.yaml
+kubectl delete -f cluster-code.yaml
 kubectl delete -f crds.yaml -f common.yaml -f operator.yaml
 kubectl delete ns rook-ceph
 ```

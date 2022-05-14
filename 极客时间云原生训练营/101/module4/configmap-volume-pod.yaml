@@ -4,7 +4,7 @@ metadata:
   name: configmap-volume-pod
 spec:
   containers:
-    - name: test-container
+    - name: code-container
       image: k8s.gcr.io/busybox
       command: [ "/bin/sh", "-c", "ls /etc/config/" ]
       volumeMounts:

@@ -9,7 +9,7 @@ type MyType struct {
 }
 
 func main() {
-	mt := MyType{Name: "test"}
+	mt := MyType{Name: "code"}
 	myType := reflect.TypeOf(mt)
 	name := myType.Field(0)
 	tag := name.Tag.Get("json")

@@ -4,16 +4,16 @@ metadata:
   name: service0
 spec:
   gateways:
-    - service0
+    - service0-v1
   hosts:
     - '*'
   http:
   - match:
       - uri:
-          exact: /service0
+          exact: /service0-v1
     route:
       - destination:
-          host: service0
+          host: service0-v1
           port:
             number: 80
 ---
@@ -28,6 +28,6 @@ spec:
     - hosts:
         - '*'
       port:
-        name: http-service0
+        name: http-service0-v1
         number: 80
         protocol: HTTP

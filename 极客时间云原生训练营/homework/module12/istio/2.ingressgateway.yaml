@@ -1,0 +1,45 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: httpserver
+spec:
+  gateways:
+    - httpserver
+  hosts:
+    - httpserver.io  # 匹配 hosts
+  http:
+    - match:
+        - uri:
+            exact: "/hello"  # 匹配 URI
+      rewrite: # 重写 URI
+        uri: "/"
+      route:
+        - destination:
+            host: service0.istio-demo.svc.cluster.local  # 真正的 Service 域名，要么写完整的域名，要么只写 service0
+            port:
+              number: 80
+    - match:
+        - uri:
+            prefix: "/nginx"
+      rewrite:
+        uri: "/"
+      route:
+        - destination:
+            host: nginx.istio-demo.svc.cluster.local
+            port:
+              number: 80
+---
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: httpserver
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - hosts:
+        - httpserver.io
+      port:
+        name: httpserver
+        number: 80
+        protocol: HTTP

@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service0-v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: service0
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: service0
+        version: v1
+    spec:
+      containers:
+        - name: service0
+          imagePullPolicy: Always
+          image: cr7258/service0:v1
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service0
+spec:
+  ports:
+    - name: http-service0
+      port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    app: service0

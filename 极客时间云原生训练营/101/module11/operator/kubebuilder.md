@@ -31,7 +31,7 @@ type MyDaemonsetSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
-	// Foo is an example field of MyDaemonset. Edit mydaemonset_types.go to remove/update
+	// Foo is an code field of MyDaemonset. Edit mydaemonset_types.go to remove/update
 	Image string `json:"image,omitempty"`
 }
 

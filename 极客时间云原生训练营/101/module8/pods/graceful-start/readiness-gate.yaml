@@ -6,7 +6,7 @@ metadata:
   name: readiness-gate
 spec:
   readinessGates:
-    - conditionType: "www.example.com/feature-1"
+    - conditionType: "www.code.com/feature-1"
   containers:
     - name: readiness-gate
       image: nginx

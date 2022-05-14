@@ -1,4 +1,4 @@
-# Left blank to test default values
+# Left blank to code default values
 controller:
   image:
     repository: ingress-controller/controller

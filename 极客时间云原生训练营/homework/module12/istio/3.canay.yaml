@@ -1,0 +1,42 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: httpserver
+spec:
+  gateways:
+    - httpserver
+  hosts:
+    - httpserver.io
+  http:
+    - match:
+        - headers:
+            user:
+              exact: chengzw
+      route:
+        - destination:
+            host: service0.istio-demo.svc.cluster.local
+            subset: v2
+    - route:
+        - destination:
+            host: service0.istio-demo.svc.cluster.local
+            subset: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: httpserver
+spec:
+  host: service0  # Service
+  trafficPolicy:
+    loadBalancer:
+      simple: RANDOM
+  subsets:
+    - name: v1
+      labels:
+        version: v1
+    - name: v2
+      labels:
+        version: v2
+      trafficPolicy:
+        loadBalancer:
+          simple: ROUND_ROBIN

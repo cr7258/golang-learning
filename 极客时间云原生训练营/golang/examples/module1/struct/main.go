@@ -13,8 +13,9 @@ type MyType struct {
 type Address struct {
 	City string `json:"city"`
 }
+
 func main() {
-	mt := MyType{Name: "test",Address: Address{City: "shanghai"}}
+	mt := MyType{Name: "code", Address: Address{City: "shanghai"}}
 	b, _ := json.Marshal(&mt)
 	fmt.Println(string(b))
 	myType := reflect.TypeOf(mt)

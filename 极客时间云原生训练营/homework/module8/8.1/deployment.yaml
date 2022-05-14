@@ -29,13 +29,13 @@ spec:
        initContainers: 
          - name: init-httpserver-1
            image: busybox:1.28
-           command: ['sh', '-c', 'echo init-httpserver-1 start! >> /tmp/test.log']
+           command: ['sh', '-c', 'echo init-httpserver-1 start! >> /tmp/code.log']
            volumeMounts: 
              - name: share-volume
                mountPath: /tmp
          - name: init-httpserver-2
            image: busybox:1.28
-           command: ['sh', '-c', 'echo init-httpserver-2 start! >> /tmp/test.log']
+           command: ['sh', '-c', 'echo init-httpserver-2 start! >> /tmp/code.log']
            volumeMounts: 
              - name: share-volume
                mountPath: /tmp
@@ -88,11 +88,11 @@ spec:
                # 只有在 postStart 操作完成之后容器的状态才会被设置成为 RUNNING。
                postStart:
                  exec:
-                   command: ["sh", "-c", "echo Hello from the postStart handler >> /tmp/test.log"]
+                   command: ["sh", "-c", "echo Hello from the postStart handler >> /tmp/code.log"]
               # 容器停止前执行的命令
                preStop:
                  exec:
-                   command: ["sh", "-c", "echo Bye from the preStop handler >> /tmp/test.log && sleep 60s"]
+                   command: ["sh", "-c", "echo Bye from the preStop handler >> /tmp/code.log && sleep 60s"]
             volumeMounts: # 在 Pod 中挂载的卷
               - name: podinfo # 将 downwardAPI 卷挂载到 /etc/podinfo 目录中
                 mountPath: /etc/podinfo

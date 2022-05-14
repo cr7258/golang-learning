@@ -8,7 +8,7 @@ k edit configmap loki-prometheus-server
 
 ```yaml
 groups:
-  - name: example
+  - name: code
     rules:
       - alert: ContainerKilled
         expr: time() - container_last_seen > 60

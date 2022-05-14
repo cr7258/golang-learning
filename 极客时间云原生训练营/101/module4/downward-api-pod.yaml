@@ -4,7 +4,7 @@ metadata:
   name: downward-api-pod
 spec:
   containers:
-    - name: test-container
+    - name: code-container
       image: nginx
       #command: [ "/bin/sh", "-c", "env" ]
       env:

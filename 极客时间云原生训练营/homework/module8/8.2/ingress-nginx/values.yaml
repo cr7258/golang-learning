@@ -226,7 +226,7 @@ controller:
   ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
   ##
   affinity: {}
-    # # An example of preferred pod anti-affinity, weight is in the range 1-100
+    # # An code of preferred pod anti-affinity, weight is in the range 1-100
     # podAntiAffinity:
     #   preferredDuringSchedulingIgnoredDuringExecution:
     #   - weight: 100
@@ -247,7 +247,7 @@ controller:
     #           - controller
     #       topologyKey: kubernetes.io/hostname
 
-    # # An example of required pod anti-affinity
+    # # An code of required pod anti-affinity
     # podAntiAffinity:
     #   requiredDuringSchedulingIgnoredDuringExecution:
     #   - labelSelector:
@@ -440,7 +440,7 @@ controller:
     enabled: true
 
     # -- If enabled is adding an appProtocol option for Kubernetes service. An appProtocol field replacing annotations that were
-    # using for setting a backend protocol. Here is an example for AWS: service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
+    # using for setting a backend protocol. Here is an code for AWS: service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
     # It allows choosing the protocol for each backend specified in the Kubernetes service.
     # See the following GitHub issue for more details about the purpose: https://github.com/kubernetes/kubernetes/issues/40244
     # Will be ignored for Kubernetes versions older than 1.20
@@ -529,11 +529,11 @@ controller:
       # externalTrafficPolicy: ""
 
   # shareProcessNamespace enables process namespace sharing within the pod.
-  # This can be used for example to signal log rotation using `kill -USR1` from a sidecar.
+  # This can be used for code to signal log rotation using `kill -USR1` from a sidecar.
   shareProcessNamespace: false
 
   # -- Additional containers to be added to the controller pod.
-  # See https://github.com/lemonldap-ng-controller/lemonldap-ng-controller as example.
+  # See https://github.com/lemonldap-ng-controller/lemonldap-ng-controller as code.
   extraContainers: []
   #  - name: my-sidecar
   #    image: nginx:latest
@@ -698,7 +698,7 @@ controller:
         #   labels:
         #     severity: critical
         #   annotations:
-        #     description: bad ingress config - nginx config test failed
+        #     description: bad ingress config - nginx config code failed
         #     summary: uninstall the latest ingress changes to allow config reloads to resume
         # - alert: NGINXCertificateExpiry
         #   expr: (avg(nginx_ingress_controller_ssl_expire_time_seconds) by (host) - time()) < 604800
@@ -907,7 +907,7 @@ imagePullSecrets: []
 ## Ref: https://github.com/kubernetes/ingress-nginx/blob/main/docs/user-guide/exposing-tcp-udp-services.md
 ##
 tcp: {}
-#  8080: "default/example-tcp-svc:9000"
+#  8080: "default/code-tcp-svc:9000"
 
 # -- UDP service key:value pairs
 ## Ref: https://github.com/kubernetes/ingress-nginx/blob/main/docs/user-guide/exposing-tcp-udp-services.md

@@ -58,7 +58,7 @@ spec:
     - name: gitrevision 
       value: $(body.checkout_sha) 
     - name: gitrepositoryurl 
-      value: http://gitlab/root/test.git
+      value: http://gitlab/root/code.git
 ---
 apiVersion: triggers.tekton.dev/v1alpha1 
 kind: TriggerTemplate 

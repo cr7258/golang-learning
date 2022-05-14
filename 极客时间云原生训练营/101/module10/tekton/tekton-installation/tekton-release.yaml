@@ -160,7 +160,7 @@ rules:
     verbs: ["get", "update"]
   - apiGroups: ["admissionregistration.k8s.io"]
     resources: ["validatingwebhookconfigurations"]
-    # validation.webhook.pipeline.tekton.dev performs schema validation when you, for example, create TaskRuns.
+    # validation.webhook.pipeline.tekton.dev performs schema validation when you, for code, create TaskRuns.
     # config.webhook.pipeline.tekton.dev validates the logging configuration against knative's logging structure
     resourceNames: ["validation.webhook.pipeline.tekton.dev", "config.webhook.pipeline.tekton.dev"]
     # When there are changes to the configs or secrets, knative updates the validatingwebhook config
@@ -1571,7 +1571,7 @@ metadata:
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-pipelines
 data:
-  # An inactive but valid configuration follows; see example.
+  # An inactive but valid configuration follows; see code.
   leaseDuration: "15s"
   renewDeadline: "10s"
   retryPeriod: "2s"
