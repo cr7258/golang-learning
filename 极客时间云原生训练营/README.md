@@ -3,4 +3,4 @@
 输出了一些技术文章：
 - 博客网站：https://www.se7enshare.cn/
 - 微信公众号：Se7en 的架构笔记
-- CSDN：https://mp.csdn.net/mp_blog/manage/article?spm=1011.2415.3001.5448
+- CSDN：https://blog.csdn.net/cr7258?spm=1011.2415.3001.5343
