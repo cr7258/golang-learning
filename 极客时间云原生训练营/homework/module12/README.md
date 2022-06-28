@@ -103,12 +103,12 @@ kubectl exec -it centos -- curl http://133.0.56.148/hello -H "Host: httpserver.i
 ```
 
 ## HTTPS 加密
-创建证书。
+创建证书，注意 Secert 和 istio-ingressgateway 在同一个 Namespace，VirtualService 和 Gateway 是与负载的应用服务在同一个 Namespace。 
 ```bash
 openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 -subj '/O=httpserver.io Inc./CN=httpserver.io' -keyout istio/4.httpserver.io.key -out istio/4.httpserver.io.crt
 kubectl create -n istio-system secret tls httpserver-credential --key=istio/4.httpserver.io.key --cert=istio/4.httpserver.io.crt --dry-run -o yaml > istio/4.secret.yaml
 kubectl apply -f istio/4.secret.yaml
-kubectl apply -f istio/4.ingressgateway-https.yaml -n istio-demo
+kubectl apply -f istio/4.ingressgateway-https.yaml -n istio-system
 ```
 部署 HTTPS 加密的 Gateway 和对应的 VirtualService。
 ```bash
@@ -117,7 +117,10 @@ kubectl apply -f istio/4.ingressgateway-https.yaml -n istio-demo
 客户端访问。
 ```bash
 # 访问 service0 的 v1 版本
-kubectl exec -it centos -- curl https://133.0.56.148 -k -H "Host: httpsserver.io"
+curl -I -k --resolve "httpsserver.io:443:133.0.56.148" https://httpsserver.io
+
+# 指定 Host 访问不行
+# kubectl exec -it centos -- curl https://133.0.56.148 -k -H "Host: httpsserver.io" -I
 ```
 
 ## 链路追踪
