@@ -1,0 +1,3 @@
+protoc --proto_path=protos --go_out=./../ models.proto
+
+protoc --proto_path=protos --go-grpc_out=./../ service.proto
