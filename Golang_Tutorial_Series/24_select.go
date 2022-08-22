@@ -1,0 +1,36 @@
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+/**
+* @description
+  select 会从多个发送/接收通道进行选择，
+ select 会阻塞直到有一个 channel 准备好，如果有多个 channel 就绪，则随机选择其中一个
+* @author chengzw
+* @since 2022/8/16
+* @link
+*/
+func server1(ch chan string) {
+	time.Sleep(6 * time.Second)
+	ch <- "from server1"
+}
+func server2(ch chan string) {
+	time.Sleep(3 * time.Second)
+	ch <- "from server2"
+
+}
+func main() {
+	output1 := make(chan string)
+	output2 := make(chan string)
+	go server1(output1)
+	go server2(output2)
+	select {
+	case s1 := <-output1:
+		fmt.Println(s1)
+	case s2 := <-output2:
+		fmt.Println(s2)
+	}
+}
